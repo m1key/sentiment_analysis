@@ -9,6 +9,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 %matplotlib inline
 
+import sys
+stdout = sys.stdout
+reload(sys)
+sys.setdefaultencoding('utf-8')
+sys.stdout = stdout
+
 # We import our access keys:
 from credentials import *    # This will allow us to use the keys as variables
 
@@ -150,3 +156,14 @@ print("Percentage de negative tweets: {}%".format(len(neg_tweets)*100/len(data['
 pos_tweets = [ tweet for index, tweet in enumerate(data['Tweets']) if data['SA'][index] > 0]
 neu_tweets = [ tweet for index, tweet in enumerate(data['Tweets']) if data['SA'][index] == 0]
 neg_tweets = [ tweet for index, tweet in enumerate(data['Tweets']) if data['SA'][index] < 0]
+
+labels = 'Positive', 'Neutral', 'Negative'
+sizes = [len(pos_tweets)*100/len(data['Tweets']), len(neu_tweets)*100/len(data['Tweets']), len(neg_tweets)*100/len(data['Tweets'])]
+explode = (0, 0, 0.1)  # only "explode" the 2nd slice (i.e. 'Hogs')
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+plt.show()
